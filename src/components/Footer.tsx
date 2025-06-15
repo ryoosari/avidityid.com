@@ -1,0 +1,116 @@
+import Link from 'next/link';
+import { siteConfig, footerNavigation } from '@/lib/config';
+
+export default function Footer() {
+  const currentYear = new Date().getFullYear();
+
+  return (
+    <footer className="bg-white border-t border-gray-200">
+      <div className="container py-12">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          {/* Brand section */}
+          <div className="col-span-1 md:col-span-2">
+            <Link href="/" className="inline-block">
+              <h2 className="text-2xl font-bold text-gradient mb-4">
+                {siteConfig.name}
+              </h2>
+            </Link>
+            <p className="text-gray-600 max-w-md mb-6">
+              {siteConfig.description}
+            </p>
+            <div className="flex space-x-6">
+              {footerNavigation.social.map((item) => (
+                <a
+                  key={item.name}
+                  href={item.href}
+                  className="text-gray-400 hover:text-primary-600 transition-colors"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <span className="sr-only">{item.name}</span>
+                  <SocialIcon icon={item.icon} />
+                </a>
+              ))}
+            </div>
+          </div>
+
+          {/* Navigation */}
+          <div>
+            <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">
+              Navigation
+            </h3>
+            <ul className="space-y-3">
+              {footerNavigation.main.map((item) => (
+                <li key={item.name}>
+                  <Link
+                    href={item.href}
+                    className="text-gray-600 hover:text-primary-600 transition-colors"
+                  >
+                    {item.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Legal */}
+          <div>
+            <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">
+              Legal
+            </h3>
+            <ul className="space-y-3">
+              {footerNavigation.legal.map((item) => (
+                <li key={item.name}>
+                  <Link
+                    href={item.href}
+                    className="text-gray-600 hover:text-primary-600 transition-colors"
+                  >
+                    {item.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        <div className="mt-12 pt-8 border-t border-gray-200">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+            <p className="text-gray-600 text-sm">
+              © {currentYear} {siteConfig.name}. All rights reserved.
+            </p>
+            <p className="text-gray-600 text-sm mt-2 md:mt-0">
+              Made with 💜 for creative professionals
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+function SocialIcon({ icon }: { icon: string }) {
+  const iconClass = "h-5 w-5";
+  
+  switch (icon) {
+    case 'twitter':
+      return (
+        <svg className={iconClass} fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+          <path d="M6.29 18.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0020 3.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.073 4.073 0 01.8 7.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 010 16.407a11.616 11.616 0 006.29 1.84" />
+        </svg>
+      );
+    case 'github':
+      return (
+        <svg className={iconClass} fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+          <path fillRule="evenodd" d="M10 0C4.477 0 0 4.484 0 10.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0110 4.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0020 10.017C20 4.484 15.522 0 10 0z" clipRule="evenodd" />
+        </svg>
+      );
+    case 'instagram':
+      return (
+        <svg className={iconClass} fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+          <path fillRule="evenodd" d="M10 0a10 10 0 100 20 10 10 0 000-20zM7.741 4.076a3.444 3.444 0 00-3.665 3.665v4.518a3.444 3.444 0 003.665 3.665h4.518a3.444 3.444 0 003.665-3.665V7.741a3.444 3.444 0 00-3.665-3.665H7.741zM10 13.125A3.125 3.125 0 1110 6.875a3.125 3.125 0 010 6.25zm0-1.25a1.875 1.875 0 100-3.75 1.875 1.875 0 000 3.75zm3.958-4.708a.625.625 0 11-1.25 0 .625.625 0 011.25 0z" clipRule="evenodd" />
+        </svg>
+      );
+    default:
+      return null;
+  }
+} 

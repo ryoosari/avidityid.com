@@ -1,0 +1,9 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/username/public_html/
+    - /bin/cp -R out/* $DEPLOYPATH
+    - find $DEPLOYPATH -type d -exec chmod 755 {} \;
+    - find $DEPLOYPATH -type f -exec chmod 644 {} \;
+    - /bin/cp .htaccess $DEPLOYPATH/.htaccess
+    - echo "Deployment completed successfully" 

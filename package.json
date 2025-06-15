@@ -1,0 +1,54 @@
+{
+  "name": "avidityid-website",
+  "version": "1.0.0",
+  "description": "Modern static website framework for Avidity Id with article management and digital download sales",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "npm run process-content && next build",
+    "static-export": "npm run process-content && NEXT_PUBLIC_STATIC_EXPORT=true next build",
+    "start": "next start",
+    "lint": "next lint",
+    "type-check": "tsc --noEmit",
+    "process-content": "node scripts/process-articles.js && node scripts/process-products.js",
+    "validate-content": "node scripts/validate-content.js",
+    "new-article": "node scripts/create-article.js",
+    "new-product": "node scripts/create-product.js",
+    "deploy": "npm run static-export && npm run copy-htaccess",
+    "copy-htaccess": "cp .htaccess out/.htaccess"
+  },
+  "dependencies": {
+    "@headlessui/react": "^1.7.17",
+    "@heroicons/react": "^2.0.18",
+    "@tailwindcss/aspect-ratio": "^0.4.2",
+    "@tailwindcss/forms": "^0.5.10",
+    "@tailwindcss/typography": "^0.5.16",
+    "clsx": "^2.0.0",
+    "date-fns": "^2.30.0",
+    "framer-motion": "^10.16.4",
+    "gray-matter": "^4.0.3",
+    "lucide-react": "^0.292.0",
+    "marked": "^9.1.2",
+    "next": "^15.3.3",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "reading-time": "^1.5.0",
+    "stripe": "^13.11.0",
+    "tailwind-merge": "^2.0.0"
+  },
+  "devDependencies": {
+    "@types/marked": "^6.0.0",
+    "@types/node": "^20.8.10",
+    "@types/react": "^18.2.33",
+    "@types/react-dom": "^18.2.14",
+    "autoprefixer": "^10.4.16",
+    "eslint": "^8.52.0",
+    "eslint-config-next": "^15.3.3",
+    "postcss": "^8.4.31",
+    "tailwindcss": "^3.3.5",
+    "typescript": "^5.2.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

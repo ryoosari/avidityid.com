@@ -1,0 +1,29 @@
+{
+  "id": "minimalist-icons",
+  "title": "Minimalist Icon Set",
+  "description": "Clean and minimal icon set with 200+ icons perfect for modern applications and websites.",
+  "price": 19.99,
+  "currency": "USD",
+  "category": "Icons",
+  "tags": [
+    "icons",
+    "minimalist",
+    "svg",
+    "vector"
+  ],
+  "preview_images": [
+    "/images/products/minimalist-icons-preview.jpg"
+  ],
+  "download_files": [
+    "minimalist-icons.zip"
+  ],
+  "license": "commercial",
+  "featured": true,
+  "created_at": "2024-01-08",
+  "updated_at": "2024-01-08",
+  "file_size": "8.5 MB",
+  "format": "SVG, PNG, AI",
+  "requirements": [
+    "Vector graphics software recommended"
+  ]
+}

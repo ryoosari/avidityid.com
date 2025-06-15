@@ -1,0 +1,29 @@
+{
+  "id": "brand-guidelines-template",
+  "title": "Brand Guidelines Template",
+  "description": "Professional brand guidelines template to showcase your brand identity with style.",
+  "price": 39.99,
+  "currency": "USD",
+  "category": "Templates",
+  "tags": [
+    "branding",
+    "guidelines",
+    "template",
+    "indesign"
+  ],
+  "preview_images": [
+    "/images/products/brand-guidelines-preview.jpg"
+  ],
+  "download_files": [
+    "brand-guidelines-template.zip"
+  ],
+  "license": "single-use",
+  "featured": false,
+  "created_at": "2024-01-05",
+  "updated_at": "2024-01-05",
+  "file_size": "25.8 MB",
+  "format": "InDesign, PDF",
+  "requirements": [
+    "Adobe InDesign 2020+"
+  ]
+}
