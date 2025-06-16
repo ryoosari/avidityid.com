@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { siteConfig, footerNavigation } from '@/lib/config';
+import AvidityLogo from './ui/AvidityLogo';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -10,10 +11,8 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand section */}
           <div className="col-span-1 md:col-span-2">
-            <Link href="/" className="inline-block">
-              <h2 className="text-2xl font-bold text-gradient mb-4">
-                {siteConfig.name}
-              </h2>
+            <Link href="/" className="inline-block mb-4">
+              <AvidityLogo size="md" />
             </Link>
             <p className="text-gray-600 max-w-md mb-6">
               {siteConfig.description}
@@ -23,7 +22,7 @@ export default function Footer() {
                 <a
                   key={item.name}
                   href={item.href}
-                  className="text-gray-400 hover:text-primary-600 transition-colors"
+                  className="text-gray-400 hover:text-secondary-600 transition-colors"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -74,12 +73,9 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 pt-8 border-t border-gray-200">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between">
-            <p className="text-gray-600 text-sm">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-center">
+            <p className="text-gray-600 text-sm text-center">
               © {currentYear} {siteConfig.name}. All rights reserved.
-            </p>
-            <p className="text-gray-600 text-sm mt-2 md:mt-0">
-              Made with 💜 for creative professionals
             </p>
           </div>
         </div>

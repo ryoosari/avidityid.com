@@ -8,6 +8,7 @@ import { ShoppingCartIcon, Bars3Icon, XMarkIcon } from '@heroicons/react/24/outl
 import { Dialog } from '@headlessui/react';
 import MobileMenu from './MobileMenu';
 import CartSlideout from './cart/CartSlideout';
+import AvidityLogo from './ui/AvidityLogo';
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -23,9 +24,7 @@ export default function Header() {
         <div className="flex lg:flex-1">
           <Link href="/" className="-m-1.5 p-1.5">
             <span className="sr-only">{siteConfig.name}</span>
-            <h1 className="text-2xl font-bold text-gradient">
-              {siteConfig.name}
-            </h1>
+            <AvidityLogo size="sm" />
           </Link>
         </div>
 

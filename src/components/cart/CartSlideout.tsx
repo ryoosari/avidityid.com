@@ -1,7 +1,7 @@
 'use client';
 
 import { Dialog, Transition } from '@headlessui/react';
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { useCart } from '@/components/providers/CartProvider';
 import Link from 'next/link';
@@ -13,6 +13,11 @@ interface CartSlideoutProps {
 
 export default function CartSlideout({ isOpen, onClose }: CartSlideoutProps) {
   const { cart, removeFromCart, updateQuantity } = useCart();
+  const [imageErrors, setImageErrors] = useState<Set<string>>(new Set());
+
+  const handleImageError = (productId: string) => {
+    setImageErrors(prev => new Set(prev).add(productId));
+  };
 
   const total = cart.items.reduce(
     (sum, item) => sum + item.price * item.quantity,
@@ -84,11 +89,42 @@ export default function CartSlideout({ isOpen, onClose }: CartSlideoutProps) {
                               {cart.items.map((item) => (
                                 <li key={item.productId} className="flex py-6">
                                   <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                                    <img
-                                      src={item.product.preview_images[0] || '/placeholder-product.jpg'}
-                                      alt={item.product.title}
-                                      className="h-full w-full object-cover object-center"
-                                    />
+                                    {item.product.preview_images[0] && !imageErrors.has(item.productId) ? (
+                                      <img
+                                        src={item.product.preview_images[0]}
+                                        alt={item.product.title}
+                                        className="h-full w-full object-cover object-center"
+                                        onError={() => handleImageError(item.productId)}
+                                      />
+                                    ) : (
+                                      <div className="h-full w-full bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center relative">
+                                        {/* Background Pattern */}
+                                        <div className="absolute inset-0 opacity-10">
+                                          <div className="grid grid-cols-4 gap-1 h-full w-full p-2">
+                                            {Array.from({ length: 16 }).map((_, i) => (
+                                              <div key={i} className="bg-gray-400 rounded-sm"></div>
+                                            ))}
+                                          </div>
+                                        </div>
+                                        
+                                        {/* Icon */}
+                                        <div className="relative z-10">
+                                          {item.product.category === 'Epson Software' ? (
+                                            <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                                            </svg>
+                                          ) : item.product.category === 'Magnetic Card RW' ? (
+                                            <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                                            </svg>
+                                          ) : (
+                                            <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+                                            </svg>
+                                          )}
+                                        </div>
+                                      </div>
+                                    )}
                                   </div>
 
                                   <div className="ml-4 flex flex-1 flex-col">
@@ -185,4 +221,4 @@ export default function CartSlideout({ isOpen, onClose }: CartSlideoutProps) {
       </Dialog>
     </Transition.Root>
   );
-} 
+}

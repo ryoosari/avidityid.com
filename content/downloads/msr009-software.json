@@ -1,0 +1,36 @@
+{
+  "id": "msr009-software",
+  "title": "Software for MSR009",
+  "description": "Software for MSR009, Windows only. Professional magnetic stripe card reader/writer software solution.",
+  "price": 3.90,
+  "currency": "USD",
+  "category": "Magnetic Card RW",
+  "tags": [
+    "msr009",
+    "magnetic-card",
+    "card-reader",
+    "card-writer",
+    "windows"
+  ],
+  "preview_images": [],
+  "download_files": [
+    "msr009-software.zip"
+  ],
+  "license": "standard",
+  "featured": false,
+  "created_at": "2024-01-15",
+  "updated_at": "2024-01-15",
+  "file_size": "7.5 MB",
+  "format": "EXE",
+  "requirements": [
+    "Windows 7 or later",
+    "MSR009 hardware",
+    "USB port"
+  ],
+  "compatibility": [
+    "Windows 11",
+    "Windows 10", 
+    "Windows 8.1",
+    "Windows 7"
+  ]
+} 

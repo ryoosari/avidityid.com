@@ -2,7 +2,7 @@ import { SiteConfig } from '@/types';
 
 export const siteConfig: SiteConfig = {
   name: 'Avidity Id',
-  description: 'Modern digital downloads and insightful articles for creative professionals',
+  description: 'Your Digital Office Solution - Premium software, digital resources, and professional office supplies for modern businesses',
   url: 'https://avidityid.com',
   links: {
     twitter: 'https://twitter.com/avidityid',
@@ -123,9 +123,9 @@ export const articleCategories = [
 export const licenses = {
   'single-use': {
     type: 'single-use',
-    description: 'Use for one project only',
-    restrictions: ['Cannot be redistributed', 'One project use only'],
-    permissions: ['Personal use', 'Commercial use for single project'],
+    description: 'Licensed for single device/installation',
+    restrictions: ['Cannot be redistributed', 'Single device installation only'],
+    permissions: ['Personal use', 'Commercial use on licensed device'],
   },
   'multiple-use': {
     type: 'multiple-use',
@@ -138,5 +138,11 @@ export const licenses = {
     description: 'Full commercial license with redistribution rights',
     restrictions: ['Must maintain attribution'],
     permissions: ['Personal use', 'Commercial use', 'Resale', 'Redistribution'],
+  },
+  'standard': {
+    type: 'standard',
+    description: 'Standard software license',
+    restrictions: [],
+    permissions: ['Personal use', 'Commercial use'],
   },
 } as const; 

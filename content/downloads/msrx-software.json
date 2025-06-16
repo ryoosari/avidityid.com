@@ -1,0 +1,44 @@
+{
+  "id": "msrx-software",
+  "title": "MSRX Software for MSR605X, MSR X6 and MSR X6BT",
+  "description": "MSRX software for MSR605X, MSR X6 and MSR X6BT. Compatible with both Mac and Windows operating systems.",
+  "price": 3.90,
+  "currency": "USD",
+  "category": "Magnetic Card RW",
+  "tags": [
+    "msrx",
+    "msr605x",
+    "msr-x6",
+    "msr-x6bt",
+    "magnetic-card",
+    "card-reader",
+    "card-writer",
+    "windows",
+    "mac"
+  ],
+  "preview_images": [],
+  "download_files": [
+    "msrx-software.zip"
+  ],
+  "license": "standard",
+  "featured": true,
+  "created_at": "2024-01-15",
+  "updated_at": "2024-01-15",
+  "file_size": "11.4 MB",
+  "format": "EXE, DMG",
+  "requirements": [
+    "Windows 7 or later, or macOS 10.12 or later",
+    "MSR605X, MSR X6, or MSR X6BT hardware",
+    "USB port"
+  ],
+  "compatibility": [
+    "Windows 11",
+    "Windows 10", 
+    "Windows 8.1",
+    "Windows 7",
+    "macOS Monterey",
+    "macOS Big Sur",
+    "macOS Catalina",
+    "macOS Mojave"
+  ]
+} 

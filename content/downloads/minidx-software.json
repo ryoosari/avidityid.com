@@ -1,0 +1,38 @@
+{
+  "id": "minidx-software",
+  "title": "Software for MiniDX3, MiniDX4, and MiniDX4B",
+  "description": "Software for MiniDX3, MiniDX4, and MiniDX4B, Windows only. Professional magnetic stripe card reader/writer software solution.",
+  "price": 3.90,
+  "currency": "USD",
+  "category": "Magnetic Card RW",
+  "tags": [
+    "minidx3",
+    "minidx4",
+    "minidx4b",
+    "magnetic-card",
+    "card-reader",
+    "card-writer",
+    "windows"
+  ],
+  "preview_images": [],
+  "download_files": [
+    "minidx-software.zip"
+  ],
+  "license": "standard",
+  "featured": false,
+  "created_at": "2024-01-15",
+  "updated_at": "2024-01-15",
+  "file_size": "9.1 MB",
+  "format": "EXE",
+  "requirements": [
+    "Windows 7 or later",
+    "MiniDX3, MiniDX4, or MiniDX4B hardware",
+    "USB port"
+  ],
+  "compatibility": [
+    "Windows 11",
+    "Windows 10", 
+    "Windows 8.1",
+    "Windows 7"
+  ]
+} 

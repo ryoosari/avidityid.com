@@ -1,16 +1,20 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
+  // Only use static export in production
+  ...(process.env.NODE_ENV === 'production' && {
+    output: 'export',
+    distDir: 'out',
+  }),
   trailingSlash: true,
   images: {
     unoptimized: true,
   },
-  distDir: 'out',
   assetPrefix: process.env.NODE_ENV === 'production' ? '' : '',
   basePath: '',
   env: {
     NEXT_PUBLIC_STATIC_EXPORT: process.env.NEXT_PUBLIC_STATIC_EXPORT,
   },
+  // Note: Headers don't work with static export, using other cache control methods
   webpack: (config, { isServer }) => {
     // Handle markdown files
     config.module.rules.push({
@@ -20,10 +24,8 @@ const nextConfig = {
 
     return config;
   },
-  // Disable server-side features for static export
-  experimental: {
-    appDir: true,
-  },
+  // Remove experimental features that cause issues with static export
+  experimental: {},
 };
 
 module.exports = nextConfig; 

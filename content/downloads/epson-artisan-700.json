@@ -1,0 +1,37 @@
+{
+  "id": "epson-artisan-700",
+  "title": "Software for Epson Artisan 700",
+  "description": "Professional printer software for Epson Artisan 700. Windows only. Includes drivers, utilities, and essential software for optimal printer performance.",
+  "price": 3.00,
+  "currency": "USD",
+  "category": "Epson Software",
+  "subcategory": "Artisan Series",
+  "tags": [
+    "epson",
+    "artisan",
+    "printer-software",
+    "drivers",
+    "windows"
+  ],
+  "preview_images": [],
+  "download_files": [
+    "epson-artisan-700-software.zip"
+  ],
+  "license": "standard",
+  "featured": false,
+  "created_at": "2024-01-15",
+  "updated_at": "2024-01-15",
+  "file_size": "47.8 MB",
+  "format": "EXE, MSI",
+  "requirements": [
+    "Windows 7 or later",
+    "50 MB free disk space",
+    "USB port for printer connection"
+  ],
+  "compatibility": [
+    "Windows 11",
+    "Windows 10", 
+    "Windows 8.1",
+    "Windows 7"
+  ]
+} 

@@ -1,0 +1,39 @@
+{
+  "id": "epson-l-series-utility",
+  "title": "Epson L Series Printer Utility Suite",
+  "description": "Comprehensive utility suite for Epson L Series printers. Windows only. Includes maintenance tools, ink monitoring, and printer optimization utilities.",
+  "price": 3.00,
+  "currency": "USD",
+  "category": "Epson Software",
+  "subcategory": "L Series",
+  "tags": [
+    "epson",
+    "l-series",
+    "printer-utility",
+    "maintenance",
+    "ink-monitoring",
+    "windows"
+  ],
+  "preview_images": [],
+  "download_files": [
+    "epson-l-series-utility.zip"
+  ],
+  "license": "standard",
+  "featured": false,
+  "created_at": "2024-01-15",
+  "updated_at": "2024-01-15",
+  "file_size": "35.7 MB",
+  "format": "EXE, MSI",
+  "requirements": [
+    "Windows 7 or later",
+    "40 MB free disk space",
+    "USB port for printer connection",
+    "Compatible Epson L Series printer"
+  ],
+  "compatibility": [
+    "Windows 11",
+    "Windows 10", 
+    "Windows 8.1",
+    "Windows 7"
+  ]
+} 
