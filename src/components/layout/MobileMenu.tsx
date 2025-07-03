@@ -3,37 +3,24 @@
 import { Dialog } from '@headlessui/react';
 import { XMarkIcon, ShoppingCartIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
-
-interface NavigationItem {
-  name: string;
-  href: string;
-}
+import { NAVIGATION_ITEMS, SITE_CONFIG } from '@/lib/constants';
 
 interface MobileMenuProps {
   isOpen: boolean;
   onClose: () => void;
-  navigation: NavigationItem[];
   totalItems: number;
   onCartOpen: () => void;
 }
 
-export default function MobileMenu({
-  isOpen,
-  onClose,
-  navigation,
-  totalItems,
-  onCartOpen,
-}: MobileMenuProps) {
+export default function MobileMenu({ isOpen, onClose, totalItems, onCartOpen }: MobileMenuProps) {
   return (
     <Dialog as="div" className="lg:hidden" open={isOpen} onClose={onClose}>
       <div className="fixed inset-0 z-50" />
       <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
         <div className="flex items-center justify-between">
           <Link href="/" className="-m-1.5 p-1.5" onClick={onClose}>
-            <span className="sr-only">Your Company</span>
-            <h1 className="text-xl font-bold text-gradient">
-              Avidity
-            </h1>
+            <span className="sr-only">{SITE_CONFIG.name}</span>
+            <h1 className="text-xl font-bold text-blue-600">Avidity</h1>
           </Link>
           <button
             type="button"
@@ -44,10 +31,11 @@ export default function MobileMenu({
             <XMarkIcon className="h-6 w-6" aria-hidden="true" />
           </button>
         </div>
+        
         <div className="mt-6 flow-root">
           <div className="-my-6 divide-y divide-gray-500/10">
             <div className="space-y-2 py-6">
-              {navigation.map((item) => (
+              {NAVIGATION_ITEMS.map((item) => (
                 <Link
                   key={item.name}
                   href={item.href}
@@ -58,6 +46,7 @@ export default function MobileMenu({
                 </Link>
               ))}
             </div>
+            
             <div className="py-6">
               <button
                 type="button"
@@ -70,7 +59,7 @@ export default function MobileMenu({
                 <ShoppingCartIcon className="h-6 w-6" aria-hidden="true" />
                 Cart
                 {totalItems > 0 && (
-                  <span className="ml-auto flex h-6 w-6 items-center justify-center rounded-full bg-primary-600 text-sm font-medium text-white">
+                  <span className="ml-auto flex h-6 w-6 items-center justify-center rounded-full bg-blue-600 text-sm font-medium text-white">
                     {totalItems}
                   </span>
                 )}
@@ -81,4 +70,4 @@ export default function MobileMenu({
       </Dialog.Panel>
     </Dialog>
   );
-} 
+}

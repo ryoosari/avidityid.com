@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Breadcrumb as BreadcrumbType } from '@/types';
+import { Breadcrumb as BreadcrumbType } from '@/types/common';
 
 interface BreadcrumbProps {
   items: BreadcrumbType[];
@@ -26,10 +26,7 @@ export default function Breadcrumb({ items }: BreadcrumbProps) {
               </svg>
             )}
             {item.current ? (
-              <span
-                className="text-sm font-medium text-gray-500"
-                aria-current="page"
-              >
+              <span className="text-sm font-medium text-gray-500" aria-current="page">
                 {item.name}
               </span>
             ) : (
@@ -45,4 +42,4 @@ export default function Breadcrumb({ items }: BreadcrumbProps) {
       </ol>
     </nav>
   );
-} 
+}

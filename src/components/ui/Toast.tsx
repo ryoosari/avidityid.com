@@ -9,48 +9,53 @@ import {
   XCircleIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline';
-import { ToastMessage } from '@/types';
+import { ToastMessage } from '@/types/common';
 
 interface ToastProps {
   toast: ToastMessage;
   onClose: () => void;
 }
 
-const toastIcons = {
-  success: CheckCircleIcon,
-  error: XCircleIcon,
-  warning: ExclamationTriangleIcon,
-  info: InformationCircleIcon,
-};
-
-const toastColors = {
-  success: 'bg-green-50 border-green-200 text-green-800',
-  error: 'bg-red-50 border-red-200 text-red-800',
-  warning: 'bg-yellow-50 border-yellow-200 text-yellow-800',
-  info: 'bg-blue-50 border-blue-200 text-blue-800',
-};
-
-const iconColors = {
-  success: 'text-green-400',
-  error: 'text-red-400',
-  warning: 'text-yellow-400',
-  info: 'text-blue-400',
-};
+const TOAST_CONFIG = {
+  icons: {
+    success: CheckCircleIcon,
+    error: XCircleIcon,
+    warning: ExclamationTriangleIcon,
+    info: InformationCircleIcon,
+  },
+  colors: {
+    success: 'bg-green-50 border-green-200 text-green-800',
+    error: 'bg-red-50 border-red-200 text-red-800',
+    warning: 'bg-yellow-50 border-yellow-200 text-yellow-800',
+    info: 'bg-blue-50 border-blue-200 text-blue-800',
+  },
+  iconColors: {
+    success: 'text-green-400',
+    error: 'text-red-400',
+    warning: 'text-yellow-400',
+    info: 'text-blue-400',
+  },
+} as const;
 
 export default function Toast({ toast, onClose }: ToastProps) {
   const [show, setShow] = useState(true);
-  const Icon = toastIcons[toast.type];
+  const Icon = TOAST_CONFIG.icons[toast.type];
 
   useEffect(() => {
     if (toast.duration && toast.duration > 0) {
       const timer = setTimeout(() => {
         setShow(false);
-        setTimeout(onClose, 150); // Wait for animation to complete
+        setTimeout(onClose, 150);
       }, toast.duration);
 
       return () => clearTimeout(timer);
     }
   }, [toast.duration, onClose]);
+
+  const handleClose = () => {
+    setShow(false);
+    setTimeout(onClose, 150);
+  };
 
   return (
     <Transition
@@ -62,11 +67,11 @@ export default function Toast({ toast, onClose }: ToastProps) {
       leaveFrom="opacity-100"
       leaveTo="opacity-0"
     >
-      <div className={`max-w-sm w-full shadow-lg rounded-lg pointer-events-auto border ${toastColors[toast.type]}`}>
+      <div className={`max-w-sm w-full shadow-lg rounded-lg pointer-events-auto border ${TOAST_CONFIG.colors[toast.type]}`}>
         <div className="p-4">
           <div className="flex items-start">
             <div className="flex-shrink-0">
-              <Icon className={`h-6 w-6 ${iconColors[toast.type]}`} aria-hidden="true" />
+              <Icon className={`h-6 w-6 ${TOAST_CONFIG.iconColors[toast.type]}`} aria-hidden="true" />
             </div>
             <div className="ml-3 w-0 flex-1 pt-0.5">
               <p className="text-sm font-medium">{toast.title}</p>
@@ -76,11 +81,8 @@ export default function Toast({ toast, onClose }: ToastProps) {
             </div>
             <div className="ml-4 flex-shrink-0 flex">
               <button
-                className="inline-flex text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
-                onClick={() => {
-                  setShow(false);
-                  setTimeout(onClose, 150);
-                }}
+                className="inline-flex text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                onClick={handleClose}
               >
                 <span className="sr-only">Close</span>
                 <XMarkIcon className="h-5 w-5" aria-hidden="true" />
@@ -91,4 +93,4 @@ export default function Toast({ toast, onClose }: ToastProps) {
       </div>
     </Transition>
   );
-} 
+}

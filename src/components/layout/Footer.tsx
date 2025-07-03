@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import { siteConfig, footerNavigation } from '@/lib/config';
-import AvidityLogo from './ui/AvidityLogo';
+import { SITE_CONFIG, FOOTER_LINKS } from '@/lib/constants';
+import AvidityLogo from '@/components/ui/AvidityLogo';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -9,41 +9,39 @@ export default function Footer() {
     <footer className="bg-white border-t border-gray-200">
       <div className="container py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* Brand section */}
           <div className="col-span-1 md:col-span-2">
             <Link href="/" className="inline-block mb-4">
               <AvidityLogo size="md" />
             </Link>
             <p className="text-gray-600 max-w-md mb-6">
-              {siteConfig.description}
+              {SITE_CONFIG.description}
             </p>
             <div className="flex space-x-6">
-              {footerNavigation.social.map((item) => (
+              {Object.entries(SITE_CONFIG.social).map(([platform, url]) => (
                 <a
-                  key={item.name}
-                  href={item.href}
-                  className="text-gray-400 hover:text-secondary-600 transition-colors"
+                  key={platform}
+                  href={url}
+                  className="text-gray-400 hover:text-blue-600 transition-colors"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <span className="sr-only">{item.name}</span>
-                  <SocialIcon icon={item.icon} />
+                  <span className="sr-only">{platform}</span>
+                  <SocialIcon platform={platform} />
                 </a>
               ))}
             </div>
           </div>
 
-          {/* Navigation */}
           <div>
             <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">
               Navigation
             </h3>
             <ul className="space-y-3">
-              {footerNavigation.main.map((item) => (
+              {FOOTER_LINKS.main.map((item) => (
                 <li key={item.name}>
                   <Link
                     href={item.href}
-                    className="text-gray-600 hover:text-primary-600 transition-colors"
+                    className="text-gray-600 hover:text-blue-600 transition-colors"
                   >
                     {item.name}
                   </Link>
@@ -52,17 +50,16 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Legal */}
           <div>
             <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">
               Legal
             </h3>
             <ul className="space-y-3">
-              {footerNavigation.legal.map((item) => (
+              {FOOTER_LINKS.legal.map((item) => (
                 <li key={item.name}>
                   <Link
                     href={item.href}
-                    className="text-gray-600 hover:text-primary-600 transition-colors"
+                    className="text-gray-600 hover:text-blue-600 transition-colors"
                   >
                     {item.name}
                   </Link>
@@ -73,21 +70,19 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 pt-8 border-t border-gray-200">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-center">
-            <p className="text-gray-600 text-sm text-center">
-              © {currentYear} {siteConfig.name}. All rights reserved.
-            </p>
-          </div>
+          <p className="text-gray-600 text-sm text-center">
+            © {currentYear} {SITE_CONFIG.name}. All rights reserved.
+          </p>
         </div>
       </div>
     </footer>
   );
 }
 
-function SocialIcon({ icon }: { icon: string }) {
+function SocialIcon({ platform }: { platform: string }) {
   const iconClass = "h-5 w-5";
   
-  switch (icon) {
+  switch (platform) {
     case 'twitter':
       return (
         <svg className={iconClass} fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
@@ -109,4 +104,4 @@ function SocialIcon({ icon }: { icon: string }) {
     default:
       return null;
   }
-} 
+}

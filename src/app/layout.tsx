@@ -1,55 +1,38 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import '@/styles/globals.css';
-import { siteConfig, defaultSEO } from '@/lib/config';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+import { SITE_CONFIG } from '@/lib/constants';
+import Header from '@/components/layout/Header';
+import Footer from '@/components/layout/Footer';
 import { CartProvider } from '@/components/providers/CartProvider';
 import { ToastProvider } from '@/components/providers/ToastProvider';
-// import CacheControl from '@/components/CacheControl';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: {
-    default: defaultSEO.title,
-    template: `%s | ${siteConfig.name}`,
+    default: SITE_CONFIG.name,
+    template: `%s | ${SITE_CONFIG.name}`,
   },
-  description: defaultSEO.description,
-  metadataBase: new URL(siteConfig.url),
+  description: SITE_CONFIG.description,
+  metadataBase: new URL(SITE_CONFIG.url),
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: siteConfig.url,
-    siteName: siteConfig.name,
-    title: defaultSEO.title,
-    description: defaultSEO.description,
-    images: [
-      {
-        url: defaultSEO.image,
-        width: 1200,
-        height: 630,
-        alt: siteConfig.name,
-      },
-    ],
+    url: SITE_CONFIG.url,
+    siteName: SITE_CONFIG.name,
+    title: SITE_CONFIG.name,
+    description: SITE_CONFIG.description,
   },
   twitter: {
     card: 'summary_large_image',
-    title: defaultSEO.title,
-    description: defaultSEO.description,
-    images: [defaultSEO.image],
+    title: SITE_CONFIG.name,
+    description: SITE_CONFIG.description,
     creator: '@avidityid',
   },
   robots: {
     index: true,
     follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
   },
   manifest: '/manifest.json',
   icons: {
@@ -70,11 +53,9 @@ export default function RootLayout({
         <meta httpEquiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
         <meta httpEquiv="Pragma" content="no-cache" />
         <meta httpEquiv="Expires" content="0" />
-        <meta name="cache-control" content="no-cache" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
       <body className={`${inter.className} flex flex-col min-h-full bg-gray-50`}>
-        {/* <CacheControl /> */}
         <CartProvider>
           <ToastProvider>
             <div className="flex flex-col min-h-screen">
@@ -89,4 +70,4 @@ export default function RootLayout({
       </body>
     </html>
   );
-} 
+}

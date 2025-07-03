@@ -1,66 +1,64 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useCart } from '@/components/providers/CartProvider';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { TruckIcon, ShieldCheckIcon } from '@heroicons/react/24/outline';
-import { sendDownloadEmail } from '@/lib/email';
+import { usePayPal } from '@/hooks/usePayPal';
+import { sendDownloadEmail } from '@/services/emailService';
+import { validateContactForm } from '@/utils/validation';
+import { formatPrice } from '@/utils/format';
+import Button from '@/components/ui/Button';
+import Input from '@/components/ui/Input';
+import LoadingSpinner from '@/components/ui/LoadingSpinner';
 
-// PayPal types
-declare global {
-  interface Window {
-    paypal?: any;
-  }
+interface ContactFormData {
+  email: string;
+  firstName: string;
+  lastName: string;
 }
 
 export default function CheckoutPage() {
   const { cart, clearCart } = useCart();
   const router = useRouter();
+  const { isLoaded: paypalLoaded } = usePayPal();
+  
   const [isProcessing, setIsProcessing] = useState(false);
-
-  const [paypalLoaded, setPaypalLoaded] = useState(false);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<ContactFormData>({
     email: '',
     firstName: '',
     lastName: '',
   });
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
 
   const subtotal = cart.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const tax = subtotal * 0.08; // 8% tax
+  const tax = subtotal * 0.08;
   const total = subtotal + tax;
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+    if (formErrors[name]) {
+      setFormErrors(prev => ({ ...prev, [name]: '' }));
+    }
+  };
+
   const renderPayPalButton = () => {
-    console.log('renderPayPalButton called', { paypalLoaded, hasPaypal: !!window.paypal });
-    
-    if (!window.paypal || !paypalLoaded) {
-      console.log('PayPal not ready', { hasPaypal: !!window.paypal, paypalLoaded });
-      return;
-    }
+    if (!window.paypal || !paypalLoaded) return null;
 
-    // Clear existing PayPal button
     const container = document.getElementById('paypal-button-container');
-    if (container) {
-      container.innerHTML = '';
-      console.log('Cleared existing PayPal button container');
-    }
-
-
+    if (container) container.innerHTML = '';
 
     window.paypal.Buttons({
       createOrder: (data: any, actions: any) => {
-        console.log('Creating PayPal order with cart:', cart.items);
-        console.log('Total amount:', total.toFixed(2));
-        console.log('Form data:', formData);
-        
-        // Validate required fields
-        if (!formData.email || !formData.firstName || !formData.lastName) {
-          alert('Please fill in all required contact information fields before proceeding.');
+        const validation = validateContactForm(formData);
+        if (!validation.isValid) {
+          setFormErrors(validation.errors);
           throw new Error('Missing required contact information');
         }
         
         if (cart.items.length === 0) {
-          alert('Your cart is empty. Please add items before checking out.');
           throw new Error('Empty cart');
         }
         
@@ -84,7 +82,6 @@ export default function CheckoutPage() {
         setIsProcessing(true);
         try {
           const order = await actions.order.capture();
-          console.log('PayPal payment successful:', order);
           
           const orderDetails = {
             orderId: order.id,
@@ -95,20 +92,12 @@ export default function CheckoutPage() {
             customerName: `${formData.firstName} ${formData.lastName}`
           };
           
-          // Store order details
           localStorage.setItem('lastOrder', JSON.stringify(orderDetails));
           
-          // Send download email
           try {
-            const emailSent = await sendDownloadEmail(orderDetails);
-            if (emailSent) {
-              console.log('Download email sent successfully');
-            } else {
-              console.warn('Failed to send download email');
-            }
+            await sendDownloadEmail(orderDetails);
           } catch (emailError) {
             console.error('Email service error:', emailError);
-            // Don't fail the order if email fails
           }
           
           clearCart();
@@ -116,59 +105,20 @@ export default function CheckoutPage() {
         } catch (error) {
           console.error('PayPal payment error:', error);
           setIsProcessing(false);
-          alert('Payment failed. Please try again.');
         }
       },
       onError: (err: any) => {
-        console.error('PayPal error details:', err);
-        console.error('Error type:', typeof err);
-        console.error('Error string:', JSON.stringify(err, null, 2));
-        alert(`PayPal Error: ${err.message || err.toString() || 'Unknown error'}`);
+        console.error('PayPal error:', err);
       },
-      onCancel: (data: any) => {
-        console.log('PayPal payment cancelled:', data);
-        // User cancelled payment
+      onCancel: () => {
+        console.log('PayPal payment cancelled');
       }
     }).render('#paypal-button-container');
   };
 
-  // Load PayPal SDK
-  useEffect(() => {
-    console.log('PayPal useEffect running', { 
-      clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID,
-      hasWindow: typeof window !== 'undefined',
-      hasPaypal: typeof window !== 'undefined' ? !!window.paypal : false
-    });
-
-    if (typeof window !== 'undefined' && !window.paypal) {
-      const script = document.createElement('script');
-      script.src = `https://www.paypal.com/sdk/js?client-id=${process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || 'test'}&currency=USD`;
-      console.log('Loading PayPal SDK from:', script.src);
-      
-      script.onload = () => {
-        console.log('PayPal SDK loaded successfully');
-        setPaypalLoaded(true);
-        renderPayPalButton();
-      };
-      
-      script.onerror = () => {
-        console.error('Failed to load PayPal SDK');
-      };
-      
-      document.body.appendChild(script);
-    } else if (typeof window !== 'undefined' && window.paypal) {
-      console.log('PayPal already available');
-      setPaypalLoaded(true);
-      renderPayPalButton();
-    }
-  }, [total, renderPayPalButton]);
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-
+  if (paypalLoaded) {
+    renderPayPalButton();
+  }
 
   if (cart.items.length === 0) {
     return (
@@ -176,11 +126,8 @@ export default function CheckoutPage() {
         <div className="text-center">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Your cart is empty</h2>
           <p className="text-gray-600 mb-6">Add some products to your cart before checking out.</p>
-          <Link
-            href="/downloads"
-            className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
-          >
-            Continue Shopping
+          <Link href="/downloads">
+            <Button>Continue Shopping</Button>
           </Link>
         </div>
       </div>
@@ -213,7 +160,7 @@ export default function CheckoutPage() {
                       <p className="text-sm text-gray-500">Qty: {item.quantity}</p>
                     </div>
                     <div className="text-sm font-medium text-gray-900">
-                      ${(item.price * item.quantity).toFixed(2)}
+                      {formatPrice(item.price * item.quantity)}
                     </div>
                   </div>
                 ))}
@@ -222,19 +169,18 @@ export default function CheckoutPage() {
               <div className="border-t border-gray-200 mt-6 pt-6 space-y-3">
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-600">Subtotal</span>
-                  <span className="text-gray-900">${subtotal.toFixed(2)}</span>
+                  <span className="text-gray-900">{formatPrice(subtotal)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-600">Tax</span>
-                  <span className="text-gray-900">${tax.toFixed(2)}</span>
+                  <span className="text-gray-900">{formatPrice(tax)}</span>
                 </div>
                 <div className="flex justify-between text-lg font-semibold">
                   <span className="text-gray-900">Total</span>
-                  <span className="text-gray-900">${total.toFixed(2)}</span>
+                  <span className="text-gray-900">{formatPrice(total)}</span>
                 </div>
               </div>
 
-              {/* Security Features */}
               <div className="mt-6 pt-6 border-t border-gray-200">
                 <div className="flex items-center space-x-3 text-sm text-gray-600">
                   <ShieldCheckIcon className="h-5 w-5 text-green-500" />
@@ -248,56 +194,41 @@ export default function CheckoutPage() {
             </div>
           </div>
 
-          {/* Payment Options */}
+          {/* Payment Form */}
           <div className="lg:order-1">
             <div className="space-y-8">
               {/* Contact Information */}
               <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
                 <h2 className="text-xl font-semibold text-gray-900 mb-6">Contact Information</h2>
                 <div className="grid grid-cols-1 gap-6">
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                      Email Address
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      required
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                    />
-                  </div>
+                  <Input
+                    label="Email Address"
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    error={formErrors.email}
+                    required
+                  />
                   <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
-                        First Name
-                      </label>
-                      <input
-                        type="text"
-                        id="firstName"
-                        name="firstName"
-                        value={formData.firstName}
-                        onChange={handleInputChange}
-                        required
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">
-                        Last Name
-                      </label>
-                      <input
-                        type="text"
-                        id="lastName"
-                        name="lastName"
-                        value={formData.lastName}
-                        onChange={handleInputChange}
-                        required
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                      />
-                    </div>
+                    <Input
+                      label="First Name"
+                      type="text"
+                      name="firstName"
+                      value={formData.firstName}
+                      onChange={handleInputChange}
+                      error={formErrors.firstName}
+                      required
+                    />
+                    <Input
+                      label="Last Name"
+                      type="text"
+                      name="lastName"
+                      value={formData.lastName}
+                      onChange={handleInputChange}
+                      error={formErrors.lastName}
+                      required
+                    />
                   </div>
                 </div>
               </div>
@@ -315,18 +246,18 @@ export default function CheckoutPage() {
                 <div 
                   id="paypal-button-container" 
                   className={isProcessing ? 'opacity-50 pointer-events-none' : ''}
-                ></div>
+                />
                 
                 {!paypalLoaded && (
                   <div className="text-center py-6">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+                    <LoadingSpinner />
                     <p className="mt-2 text-sm text-gray-600">Loading PayPal...</p>
                   </div>
                 )}
                 
                 {isProcessing && (
                   <div className="text-center py-4">
-                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600 mx-auto"></div>
+                    <LoadingSpinner size="sm" />
                     <p className="mt-2 text-sm text-gray-600">Processing payment...</p>
                   </div>
                 )}
@@ -342,4 +273,4 @@ export default function CheckoutPage() {
       </div>
     </div>
   );
-} 
+}

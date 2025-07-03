@@ -4,15 +4,15 @@ import FeaturedProducts from '@/components/sections/FeaturedProducts';
 import CompanyInfo from '@/components/sections/CompanyInfo';
 import FeaturedArticles from '@/components/sections/FeaturedArticles';
 import Newsletter from '@/components/sections/Newsletter';
-import { defaultSEO } from '@/lib/config';
-import { getFeaturedProducts } from '@/lib/products';
+import { SITE_CONFIG } from '@/lib/constants';
+import { getFeaturedProducts } from '@/services/dataService';
 
 export const metadata: Metadata = {
-  title: defaultSEO.title,
-  description: defaultSEO.description,
+  title: SITE_CONFIG.name,
+  description: SITE_CONFIG.description,
   openGraph: {
-    title: defaultSEO.title,
-    description: defaultSEO.description,
+    title: SITE_CONFIG.name,
+    description: SITE_CONFIG.description,
     url: '/',
   },
 };
@@ -29,4 +29,4 @@ export default function HomePage() {
       <Newsletter />
     </>
   );
-} 
+}

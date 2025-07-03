@@ -1,7 +1,8 @@
 'use client';
 
 import { createContext, useContext, useReducer, useEffect, ReactNode } from 'react';
-import { Cart, CartItem, DigitalProduct } from '@/types';
+import { Cart, CartItem, DigitalProduct } from '@/types/common';
+import { useLocalStorage } from '@/hooks/useLocalStorage';
 
 interface CartContextType {
   cart: Cart;
@@ -31,8 +32,7 @@ function cartReducer(state: Cart, action: CartAction): Cart {
             ? { ...item, quantity: item.quantity + action.quantity }
             : item
         );
-        const total = updatedItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-        return { ...state, items: updatedItems, total };
+        return { ...state, items: updatedItems, total: calculateTotal(updatedItems) };
       }
 
       const newItem: CartItem = {
@@ -43,15 +43,12 @@ function cartReducer(state: Cart, action: CartAction): Cart {
       };
 
       const updatedItems = [...state.items, newItem];
-      const total = updatedItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-      
-      return { ...state, items: updatedItems, total };
+      return { ...state, items: updatedItems, total: calculateTotal(updatedItems) };
     }
 
     case 'REMOVE_FROM_CART': {
       const updatedItems = state.items.filter(item => item.productId !== action.productId);
-      const total = updatedItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-      return { ...state, items: updatedItems, total };
+      return { ...state, items: updatedItems, total: calculateTotal(updatedItems) };
     }
 
     case 'UPDATE_QUANTITY': {
@@ -64,8 +61,7 @@ function cartReducer(state: Cart, action: CartAction): Cart {
           ? { ...item, quantity: action.quantity }
           : item
       );
-      const total = updatedItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-      return { ...state, items: updatedItems, total };
+      return { ...state, items: updatedItems, total: calculateTotal(updatedItems) };
     }
 
     case 'CLEAR_CART':
@@ -79,6 +75,10 @@ function cartReducer(state: Cart, action: CartAction): Cart {
   }
 }
 
+function calculateTotal(items: CartItem[]): number {
+  return items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+}
+
 const initialCart: Cart = {
   items: [],
   total: 0,
@@ -87,28 +87,17 @@ const initialCart: Cart = {
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [cart, dispatch] = useReducer(cartReducer, initialCart);
+  const [storedCart, setStoredCart] = useLocalStorage<Cart>('avidity-cart', initialCart);
 
-  // Load cart from localStorage on mount
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const savedCart = localStorage.getItem('avidity-cart');
-      if (savedCart) {
-        try {
-          const parsedCart = JSON.parse(savedCart);
-          dispatch({ type: 'LOAD_CART', cart: parsedCart });
-        } catch (error) {
-          console.error('Error loading cart from localStorage:', error);
-        }
-      }
+    if (storedCart.items.length > 0) {
+      dispatch({ type: 'LOAD_CART', cart: storedCart });
     }
   }, []);
 
-  // Save cart to localStorage whenever it changes
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('avidity-cart', JSON.stringify(cart));
-    }
-  }, [cart]);
+    setStoredCart(cart);
+  }, [cart, setStoredCart]);
 
   const addToCart = (product: DigitalProduct, quantity = 1) => {
     dispatch({ type: 'ADD_TO_CART', product, quantity });
@@ -147,4 +136,4 @@ export function useCart() {
     throw new Error('useCart must be used within a CartProvider');
   }
   return context;
-} 
+}
