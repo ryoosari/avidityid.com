@@ -189,13 +189,13 @@ export default function CartSlideout({ isOpen, onClose }: CartSlideoutProps) {
                           Shipping and taxes calculated at checkout.
                         </p>
                         <div className="mt-6">
-                          <button
-                            type="button"
+                          <Link
+                            href="/checkout"
                             className="flex w-full items-center justify-center rounded-md border border-transparent bg-primary-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-primary-700"
                             onClick={onClose}
                           >
                             Checkout
-                          </button>
+                          </Link>
                         </div>
                         <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                           <p>
