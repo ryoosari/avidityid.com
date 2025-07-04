@@ -75,7 +75,8 @@ export function getProductById(id: string): DigitalProduct | null {
 }
 
 export function getFeaturedProducts(): DigitalProduct[] {
-  return readJsonFile<DigitalProduct>('featured-products.json');
+  const allProducts = getAllProducts();
+  return allProducts.filter(product => product.featured);
 }
 
 export function getProductsByCategory(category: string): DigitalProduct[] {
