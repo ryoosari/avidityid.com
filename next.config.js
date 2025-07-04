@@ -1,20 +1,39 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Only use static export in production
-  ...(process.env.NODE_ENV === 'production' && {
-    output: 'export',
-    distDir: 'out',
-  }),
+  // Optimized for Netlify deployment
   trailingSlash: true,
   images: {
-    unoptimized: true,
+    // Netlify handles image optimization
+    unoptimized: false,
+    domains: ['avidityid.com'],
   },
-  assetPrefix: process.env.NODE_ENV === 'production' ? '' : '',
-  basePath: '',
+  // Environment variables
   env: {
-    NEXT_PUBLIC_STATIC_EXPORT: process.env.NEXT_PUBLIC_STATIC_EXPORT,
+    NEXT_PUBLIC_NETLIFY_DEPLOY: process.env.NETLIFY ? 'true' : 'false',
   },
-  // Note: Headers don't work with static export, using other cache control methods
+  // Custom headers for security and caching
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'X-Frame-Options',
+            value: 'DENY',
+          },
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
+          },
+          {
+            key: 'Referrer-Policy',
+            value: 'strict-origin-when-cross-origin',
+          },
+        ],
+      },
+    ];
+  },
+  // Webpack configuration
   webpack: (config, { isServer }) => {
     // Handle markdown files
     config.module.rules.push({
@@ -24,7 +43,7 @@ const nextConfig = {
 
     return config;
   },
-  // Remove experimental features that cause issues with static export
+  // Experimental features for better performance
   experimental: {},
 };
 

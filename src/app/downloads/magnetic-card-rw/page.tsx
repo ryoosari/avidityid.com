@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import ProductGrid from '@/components/sections/ProductGrid';
-import { getAllProducts } from '@/lib/products';
+import { getAllProducts } from '@/services/dataService';
 import Link from 'next/link';
 import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 

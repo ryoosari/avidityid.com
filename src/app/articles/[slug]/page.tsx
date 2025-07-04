@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { CalendarIcon, ClockIcon, UserIcon, ArrowLeftIcon } from '@heroicons/react/24/outline';
-import { getArticleBySlug, getAllArticles, getRelatedArticles } from '@/lib/articles';
+import { getArticleBySlug, getAllArticles, getRelatedArticles } from '@/services/dataService';
 import { marked } from 'marked';
 
 interface ArticlePageProps {

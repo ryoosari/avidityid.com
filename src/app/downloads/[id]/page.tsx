@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { getProductById, getAllProducts, getProductsByCategory } from '@/lib/products';
-import { licenses } from '@/lib/config';
+import { getProductById, getAllProducts, getProductsByCategory } from '@/services/dataService';
+import { LICENSE_TYPES } from '@/lib/constants';
 import ProductPageClient from './ProductPageClient';
 
 interface ProductPageProps {
@@ -45,7 +45,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
     notFound();
   }
 
-  const license = licenses[product.license];
+  const license = LICENSE_TYPES[product.license];
   
   // Get related products
   const relatedProducts = getProductsByCategory(product.category)

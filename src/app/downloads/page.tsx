@@ -1,8 +1,7 @@
 import { Metadata } from 'next';
 import ProductGrid from '@/components/sections/ProductGrid';
 import ProductFilters from '@/components/sections/ProductFilters';
-import { getAllProducts, getProductCategories, getProductTags } from '@/lib/products';
-import { defaultSEO } from '@/lib/config';
+import { getAllProducts, getProductCategories, getProductTags } from '@/services/dataService';
 import Link from 'next/link';
 
 export const metadata: Metadata = {

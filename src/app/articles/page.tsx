@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import ArticleGrid from '@/components/sections/ArticleGrid';
-import { getAllArticles } from '@/lib/articles';
+import { getAllArticles } from '@/services/dataService';
 
 export const metadata: Metadata = {
   title: 'Articles - Design Insights & Tutorials',

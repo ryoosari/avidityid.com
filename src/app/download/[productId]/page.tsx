@@ -4,8 +4,41 @@ import { useEffect, useState } from 'react';
 import { useParams, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { DocumentArrowDownIcon, ExclamationTriangleIcon, ClockIcon } from '@heroicons/react/24/outline';
-import { verifyDownloadToken, markTokenAsUsed } from '@/lib/email';
-import { getProductById } from '@/lib/products';
+// These functions will be stubbed for client-side use since this is a client component
+function verifyDownloadToken(token: string, productId: string): boolean {
+  // Simple client-side token verification
+  const downloadTokens = JSON.parse(localStorage.getItem('downloadTokens') || '{}');
+  const tokenData = downloadTokens[token];
+  
+  if (!tokenData) return false;
+  if (tokenData.productId !== productId) return false;
+  if (new Date() > new Date(tokenData.expires)) return false;
+  if (tokenData.used) return false;
+  
+  return true;
+}
+
+function markTokenAsUsed(token: string): void {
+  const downloadTokens = JSON.parse(localStorage.getItem('downloadTokens') || '{}');
+  if (downloadTokens[token]) {
+    downloadTokens[token].used = true;
+    localStorage.setItem('downloadTokens', JSON.stringify(downloadTokens));
+  }
+}
+
+function getProductById(id: string): any {
+  // For demo purposes, return a basic product object
+  // In production, this would come from the processed JSON data
+  return {
+    id,
+    title: `Product ${id}`,
+    description: 'Digital product download',
+    price: 3.00,
+    currency: 'USD',
+    category: 'Software',
+    slug: id
+  };
+}
 
 export default function SecureDownloadPage() {
   const params = useParams();

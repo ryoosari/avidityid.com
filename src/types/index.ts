@@ -24,7 +24,7 @@ export interface DigitalProduct {
   tags: string[];
   preview_images: string[];
   download_files: string[];
-  license: 'single-use' | 'multiple-use' | 'commercial';
+  license: 'single-use' | 'multiple-use' | 'commercial' | 'standard';
   featured: boolean;
   created_at: string;
   updated_at: string;

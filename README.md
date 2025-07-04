@@ -1,19 +1,20 @@
 # Avidity Id Website Framework
 
-A modern, static website framework built with Next.js 14, TypeScript, and Tailwind CSS. Features article management, digital downloads, and e-commerce functionality optimized for static hosting.
+A modern website built with Next.js 15, TypeScript, and Tailwind CSS. Features article management, digital downloads, and e-commerce functionality optimized for Netlify deployment.
 
 ## 🚀 Features
 
-- **Modern Stack**: Next.js 14, TypeScript, Tailwind CSS
-- **Static Export**: Optimized for shared hosting (Bluehost, etc.)
+- **Modern Stack**: Next.js 15, TypeScript, Tailwind CSS
+- **Netlify Optimized**: Zero-config deployment with automatic builds
 - **Article Management**: Markdown-based articles with front matter
 - **Digital Downloads**: E-commerce functionality for digital products
 - **Payment Integration**: Stripe and PayPal support
 - **Responsive Design**: Mobile-first, accessible UI components
 - **SEO Optimized**: Meta tags, structured data, sitemap generation
 - **Content Processing**: Automated markdown to JSON conversion
-- **GitHub Actions**: CI/CD pipeline with automated deployment
+- **Automatic Deployment**: Push to deploy via Netlify
 - **Framer Motion**: Smooth animations and transitions
+- **Performance**: CDN, image optimization, edge functions
 
 ## 📁 Project Structure
 
@@ -164,37 +165,38 @@ Create products in `content/downloads/` as JSON files:
 3. **Test locally**: `npm run dev`
 4. **Commit changes**: `git add . && git commit -m "Add new content"`
 5. **Push to GitHub**: `git push origin main`
+6. **Automatic deploy**: Netlify builds and deploys automatically
 
-### GitHub Actions Deployment
+### Netlify Deployment
 
-The project includes automated deployment via GitHub Actions:
+The project is optimized for **Netlify** deployment with zero configuration:
 
-1. **On push to main**: Builds and deploys to production branch
-2. **Content validation**: Ensures all content is valid
-3. **Static export**: Generates optimized static files
-4. **Bluehost sync**: Automatically syncs with hosting
+#### Features:
+- ✅ **Automatic builds** on every push to main
+- ✅ **Next.js optimization** via @netlify/plugin-nextjs
+- ✅ **Deploy previews** for pull requests
+- ✅ **Custom domains** and SSL certificates
+- ✅ **Edge functions** and form handling
+- ✅ **Image optimization** and CDN
 
-### Manual Deployment
+#### Setup:
+1. **Connect repository** to Netlify
+2. **Configure environment variables** in Netlify dashboard
+3. **Deploy automatically** - Netlify handles the rest!
 
-For manual deployment to shared hosting:
-
-```bash
-# Build static site
-npm run static-export
-
-# Upload 'out' folder contents to your hosting provider
-# Don't forget to copy .htaccess file
-```
+For detailed instructions, see: [Netlify Deployment Guide](docs/netlify-deployment.md)
 
 ## 🔧 Scripts
 
 - `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run static-export` - Build static site for hosting
+- `npm run build` - Build for production (used by Netlify)
+- `npm run start` - Start production server locally
 - `npm run process-content` - Process markdown and JSON files
 - `npm run validate-content` - Validate all content files
 - `npm run new-article` - Create new article template
 - `npm run new-product` - Create new product template
+- `npm run netlify-build` - Build for Netlify deployment
+- `npm run preview` - Build and preview locally
 - `npm run type-check` - Run TypeScript checks
 - `npm run lint` - Run ESLint
 

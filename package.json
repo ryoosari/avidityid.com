@@ -6,7 +6,6 @@
   "scripts": {
     "dev": "next dev",
     "build": "npm run process-content && next build",
-    "static-export": "npm run process-content && NEXT_PUBLIC_STATIC_EXPORT=true next build",
     "start": "next start",
     "lint": "next lint",
     "type-check": "tsc --noEmit",
@@ -14,10 +13,11 @@
     "validate-content": "node scripts/validate-content.js",
     "new-article": "node scripts/create-article.js",
     "new-product": "node scripts/create-product.js",
-    "deploy": "npm run static-export && npm run copy-htaccess",
-    "copy-htaccess": "cp .htaccess out/.htaccess"
+    "netlify-build": "npm run process-content && next build",
+    "preview": "npm run build && npm start"
   },
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "@headlessui/react": "^2.2.4",
     "@heroicons/react": "^2.0.18",
     "@tailwindcss/aspect-ratio": "^0.4.2",
@@ -27,7 +27,7 @@
     "date-fns": "^2.30.0",
     "framer-motion": "^11.11.17",
     "gray-matter": "^4.0.3",
-    "lucide-react": "^0.300.0",
+    "lucide-react": "^0.468.0",
     "marked": "^9.1.2",
     "next": "^15.3.3",
     "react": "^19.1.0",
@@ -37,6 +37,7 @@
     "tailwind-merge": "^2.0.0"
   },
   "devDependencies": {
+    "@netlify/plugin-nextjs": "^5.4.0",
     "@types/marked": "^6.0.0",
     "@types/node": "^20.8.10",
     "@types/react": "^18.2.33",
