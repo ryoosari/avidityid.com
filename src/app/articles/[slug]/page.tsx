@@ -61,7 +61,27 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     });
   };
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: article.title,
+    description: article.excerpt,
+    author: { '@type': 'Person', name: article.author },
+    datePublished: article.date,
+    publisher: {
+      '@type': 'Organization',
+      name: 'Avidity Id',
+      url: 'https://avidityid.com',
+    },
+    ...(article.featured_image && { image: `https://avidityid.com${article.featured_image}` }),
+  };
+
   return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Back Link */}
@@ -191,5 +211,6 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         )}
       </div>
     </div>
+    </>
   );
-} 
+}

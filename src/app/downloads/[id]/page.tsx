@@ -52,5 +52,29 @@ export default async function ProductPage({ params }: ProductPageProps) {
     .filter(p => p.id !== product.id)
     .slice(0, 3);
 
-  return <ProductPageClient product={product} license={license} relatedProducts={relatedProducts} />;
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: product.title,
+    description: product.description,
+    url: `https://avidityid.com/downloads/${product.id}`,
+    brand: { '@type': 'Organization', name: 'Avidity Id' },
+    offers: {
+      '@type': 'Offer',
+      price: product.price,
+      priceCurrency: product.currency,
+      availability: 'https://schema.org/InStock',
+      url: `https://avidityid.com/downloads/${product.id}`,
+    },
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <ProductPageClient product={product} license={license} relatedProducts={relatedProducts} />
+    </>
+  );
 } 

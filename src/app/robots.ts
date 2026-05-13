@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/checkout/', '/downloads/[id]/'],
+      disallow: ['/checkout/'],
     },
     sitemap: 'https://avidityid.com/sitemap.xml',
   };
