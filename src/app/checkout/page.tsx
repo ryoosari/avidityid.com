@@ -262,41 +262,6 @@ export default function CheckoutPage() {
                   </div>
                 )}
 
-                {process.env.NODE_ENV !== 'production' && (
-                  <div className="mt-6 pt-6 border-t border-dashed border-yellow-300">
-                    <p className="text-xs text-yellow-700 mb-2">🧪 Dev only — skip PayPal and simulate a successful purchase:</p>
-                    <Button
-                      onClick={async () => {
-                        const validation = validateContactForm(formData);
-                        if (!validation.isValid) {
-                          setFormErrors(validation.errors);
-                          return;
-                        }
-                        setIsProcessing(true);
-                        const orderDetails = {
-                          orderId: `TEST-${Date.now()}`,
-                          amount: total,
-                          items: cart.items,
-                          timestamp: new Date().toISOString(),
-                          payerEmail: formData.email,
-                          customerName: `${formData.firstName} ${formData.lastName}`,
-                        };
-                        localStorage.setItem('lastOrder', JSON.stringify(orderDetails));
-                        try {
-                          await sendDownloadEmail(orderDetails);
-                        } catch (emailError) {
-                          console.error('Email service error:', emailError);
-                        }
-                        clearCart();
-                        router.push('/checkout/success');
-                      }}
-                      className="w-full bg-yellow-500 hover:bg-yellow-600 text-white"
-                    >
-                      Skip PayPal — Simulate Purchase
-                    </Button>
-                  </div>
-                )}
-
                 <div className="mt-4 flex items-center justify-center text-xs text-gray-500">
                   <ShieldCheckIcon className="h-4 w-4 mr-1" />
                   <span>Secured by PayPal • SSL Encrypted</span>
