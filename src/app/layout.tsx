@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import { GoogleAnalytics } from '@next/third-parties/google';
 import '@/styles/globals.css';
 import { SITE_CONFIG } from '@/lib/constants';
 import Header from '@/components/layout/Header';
@@ -68,6 +69,7 @@ export default function RootLayout({
           </ToastProvider>
         </CartProvider>
       </body>
+      <GoogleAnalytics gaId="G-0KH23THTLK" />
     </html>
   );
 }
