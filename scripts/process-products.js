@@ -137,7 +137,8 @@ function processProducts() {
         updated_at: product.updated_at || new Date().toISOString().split('T')[0],
         file_size: product.file_size,
         format: product.format,
-        requirements: product.requirements || []
+        requirements: product.requirements || [],
+        coming_soon: product.coming_soon || false
       };
 
       products.push(processedProduct);

@@ -100,16 +100,36 @@ export default function CheckoutSuccessPage() {
             </div>
           )}
           
-          <div className="bg-blue-50 rounded-lg p-6 mb-8">
-            <div className="flex items-center justify-center mb-3">
-              <DocumentArrowDownIcon className="h-6 w-6 text-blue-600 mr-2" />
-              <h3 className="text-lg font-semibold text-blue-900">Next Steps</h3>
+          {orderDetails && (
+            <div className="bg-green-50 rounded-lg p-6 mb-8 text-left">
+              <div className="flex items-center mb-4">
+                <DocumentArrowDownIcon className="h-6 w-6 text-green-700 mr-2" />
+                <h3 className="text-lg font-semibold text-green-900">Your Downloads</h3>
+              </div>
+              <div className="space-y-3">
+                {orderDetails.items.flatMap((item: any) =>
+                  (item.product?.download_files || []).map((filename: string) => (
+                    <a
+                      key={filename}
+                      href={`/downloads/${filename}`}
+                      download
+                      className="flex items-center justify-between bg-white border border-green-200 rounded-md px-4 py-3 hover:bg-green-50 transition-colors"
+                    >
+                      <span className="font-medium text-gray-900">{item.product.title}</span>
+                      <span className="text-sm text-green-700 font-medium">Download →</span>
+                    </a>
+                  ))
+                )}
+              </div>
             </div>
+          )}
+
+          <div className="bg-blue-50 rounded-lg p-6 mb-8">
+            <h3 className="text-lg font-semibold text-blue-900 mb-3">Next Steps</h3>
             <div className="text-sm text-blue-800 space-y-2">
-              <p>📧 Check your email for secure download links (may take a few minutes)</p>
-              <p>⏰ Download links are valid for 48 hours</p>
-              <p>💾 Downloads include installation instructions and license information</p>
-              <p>🔒 Keep your download links secure and don't share them</p>
+              <p>📧 A copy of your download links has been emailed to you</p>
+              <p>💾 Save the files now — they include installation instructions</p>
+              <p>📬 If you don't see the email, check spam or contact support</p>
             </div>
           </div>
           

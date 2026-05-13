@@ -32,6 +32,7 @@ export interface DigitalProduct {
   format?: string;
   requirements?: string[];
   compatibility?: string[];
+  coming_soon?: boolean;
 }
 
 export interface CartItem {

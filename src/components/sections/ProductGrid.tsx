@@ -63,12 +63,19 @@ export default function ProductGrid({ products }: ProductGridProps) {
             )}
             
             {/* Featured badge */}
-            {product.featured && (
+            {product.featured && !product.coming_soon && (
               <div className="absolute top-3 left-3">
                 <Badge variant="primary" className="flex items-center space-x-1">
                   <StarIcon className="h-3 w-3" />
                   <span>Featured</span>
                 </Badge>
+              </div>
+            )}
+
+            {/* Coming Soon badge */}
+            {product.coming_soon && (
+              <div className="absolute top-3 left-3">
+                <Badge variant="warning">Coming Soon</Badge>
               </div>
             )}
           </div>
@@ -104,13 +111,19 @@ export default function ProductGrid({ products }: ProductGridProps) {
                 <span className="text-sm text-gray-500">{product.currency}</span>
               </div>
               
-              <Link
-                href={`/downloads/${product.id}`}
-                className="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors"
-              >
-                <ShoppingCartIcon className="h-4 w-4 mr-1" />
-                View
-              </Link>
+              {product.coming_soon ? (
+                <span className="inline-flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-500 bg-gray-100">
+                  Coming Soon
+                </span>
+              ) : (
+                <Link
+                  href={`/downloads/${product.id}`}
+                  className="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors"
+                >
+                  <ShoppingCartIcon className="h-4 w-4 mr-1" />
+                  View
+                </Link>
+              )}
             </div>
 
             {/* Tags */}

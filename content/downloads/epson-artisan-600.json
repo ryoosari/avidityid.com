@@ -2,7 +2,7 @@
   "id": "epson-artisan-600",
   "title": "Software for Epson Artisan 600",
   "description": "Professional printer software for Epson Artisan 600. Windows only. Includes drivers, utilities, and essential software for optimal printer performance.",
-  "price": 3.00,
+  "price": 3.0,
   "currency": "USD",
   "category": "Epson Software",
   "subcategory": "Artisan Series",
@@ -30,8 +30,9 @@
   ],
   "compatibility": [
     "Windows 11",
-    "Windows 10", 
+    "Windows 10",
     "Windows 8.1",
     "Windows 7"
-  ]
-} 
+  ],
+  "coming_soon": true
+}

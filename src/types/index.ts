@@ -31,6 +31,7 @@ export interface DigitalProduct {
   file_size?: string;
   format?: string;
   requirements?: string[];
+  coming_soon?: boolean;
 }
 
 export interface CartItem {
@@ -127,13 +128,6 @@ export interface PaginationData {
   itemsPerPage: number;
   hasNextPage: boolean;
   hasPreviousPage: boolean;
-}
-
-export interface StripeSession {
-  id: string;
-  url: string;
-  success_url: string;
-  cancel_url: string;
 }
 
 export interface DownloadToken {
