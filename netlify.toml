@@ -10,17 +10,6 @@
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
-# Handle trailing slashes
-[[redirects]]
-  from = "/downloads/:path"
-  to = "/downloads/:path/"
-  status = 301
-
-[[redirects]]
-  from = "/articles/:path"
-  to = "/articles/:path/"
-  status = 301
-
 # Security headers
 [[headers]]
   for = "/*"
